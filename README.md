@@ -23,4 +23,4 @@ This bot detects every new bot deployments by Nethermind
 
 The bot behaviour can be verified with the following transactions:
 
-- [//0x8ef79a79f23aca68acf59055229d685d6a5137d6a2eebc9890a3fdeba358c737//](//https://polygonscan.com/tx/0x8ef79a79f23aca68acf59055229d685d6a5137d6a2eebc9890a3fdeba358c737//) (`createAgent` function)
+- [0x8ef79a79f23aca68acf59055229d685d6a5137d6a2eebc9890a3fdeba358c737](https://polygonscan.com/tx/0x8ef79a79f23aca68acf59055229d685d6a5137d6a2eebc9890a3fdeba358c737) (`createAgent` function)
