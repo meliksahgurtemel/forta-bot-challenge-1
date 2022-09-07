@@ -17,7 +17,7 @@ export function provideHandleTransaction(functionAbi: string, proxy: string, dep
         Finding.fromObject({
           name: "Bot Deployment",
           description: "New Bot is deployed by Nethermind",
-          alertId: "NETHERMIND-BOT-DEPLOYMENT",
+          alertId: "NETH-1",
           severity: FindingSeverity.Info,
           type: FindingType.Info,
           protocol: "Nethermind",

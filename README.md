@@ -12,12 +12,12 @@ This bot detects every new bot deployments by Nethermind
 
 - NETHERMIND-BOT-DEPLOYMENT
   - Fired when a new bot deployed by Nethermind
-  - Severity is always set to "info" (mention any conditions where it could be something else)
-  - Type is always set to "info" (mention any conditions where it could be something else)
-  - Metada field
-    - `agentId` of the new deployed bot
-    - `metadata` of the new deploeyd bot
-    - `chainIds` of the new deployed bot
+  - Severity is always set to "Info"
+  - Type is always set to "Info"
+  - Metadata field
+    - `agentId`: agentId of the deployed bot
+    - `metadata`: metedata of the deployed bot
+    - `chainIds`: supported chains of the bot
 
 ## Test Data
 

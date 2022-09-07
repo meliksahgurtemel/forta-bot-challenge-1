@@ -16,7 +16,9 @@ const MOCK_METADATA = {
 const MOCK_METADATA2 = {
   agentId: "12345678",
   metadata: "abcdefg",
-  chainIds: "137",
+  chainIds: [
+    "137"
+  ],
 };
 
 const MOCK_FINDING = (agentId: string, metadata: string, chainIds: string): Finding => {
@@ -101,7 +103,7 @@ describe("Bot deployment tracker Agent", () => {
 
     expect(findings).toStrictEqual([
       MOCK_FINDING(MOCK_METADATA.agentId, MOCK_METADATA.metadata, MOCK_METADATA.chainIds),
-      MOCK_FINDING(MOCK_METADATA2.agentId, MOCK_METADATA2.metadata, MOCK_METADATA2.chainIds),
+      MOCK_FINDING(MOCK_METADATA2.agentId, MOCK_METADATA2.metadata, MOCK_METADATA2.chainIds[0]),
     ]);
   });
 });
