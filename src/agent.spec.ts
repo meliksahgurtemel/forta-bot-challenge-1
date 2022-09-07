@@ -10,17 +10,13 @@ const TEST_ADDRESS = createAddress("0x123abc");
 const MOCK_METADATA = {
   agentId: "123",
   metadata: "abcd",
-  chainIds: [
-    "137"
-  ],
+  chainIds: ["137"],
 };
 
 const MOCK_METADATA2 = {
   agentId: "12345678",
   metadata: "abcdefg",
-  chainIds: [
-    "137"
-  ],
+  chainIds: ["137"],
 };
 
 const MOCK_FINDING = (agentId: string, metadata: string, chainIds: string): Finding => {
