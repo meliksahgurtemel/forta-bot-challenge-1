@@ -1,9 +1,10 @@
 import { FindingType, FindingSeverity, Finding, HandleTransaction, TransactionEvent } from "forta-agent";
-import { FUNCTION_ABI, PROXY_ADDRESS, BOT_DEPLOYER_ADDRESS } from "./constants";
+import { FUNCTION_ABI, REGISTRY_ADDRESS, BOT_DEPLOYER_ADDRESS } from "./constants";
 import { provideHandleTransaction } from "./agent";
 import { createAddress } from "forta-agent-tools";
 import { TestTransactionEvent } from "forta-agent-tools/lib/test";
 import { Interface } from "ethers/lib/utils";
+import { utils } from "ethers";
 
 const TEST_ADDRESS = createAddress("0x123abc");
 
@@ -26,7 +27,7 @@ const MOCK_FINDING = (agentId: string, metadata: string, chainIds: string): Find
     alertId: "NETH-1",
     severity: FindingSeverity.Info,
     type: FindingType.Info,
-    protocol: "Nethermind",
+    protocol: "Forta",
     metadata: {
       agentId: agentId,
       metadata: metadata,
@@ -35,13 +36,13 @@ const MOCK_FINDING = (agentId: string, metadata: string, chainIds: string): Find
   });
 };
 
-describe("Bot deployment tracker Agent", () => {
+describe("Bot deployment tracker", () => {
   let handleTransaction: HandleTransaction;
   let proxy = new Interface([FUNCTION_ABI]);
   let findings: Finding[];
 
   beforeAll(() => {
-    handleTransaction = provideHandleTransaction(FUNCTION_ABI, PROXY_ADDRESS, BOT_DEPLOYER_ADDRESS);
+    handleTransaction = provideHandleTransaction(FUNCTION_ABI, REGISTRY_ADDRESS, BOT_DEPLOYER_ADDRESS);
   });
 
   it("should return no Findings if no bots deployed", async () => {
@@ -53,11 +54,16 @@ describe("Bot deployment tracker Agent", () => {
   it("should return no Findings if tx is not sent from the deployer", async () => {
     const mockTxEvent: TransactionEvent = new TestTransactionEvent()
       .setFrom(TEST_ADDRESS)
-      .setTo(PROXY_ADDRESS)
+      .setTo(REGISTRY_ADDRESS)
       .addTraces({
-        to: PROXY_ADDRESS,
+        to: REGISTRY_ADDRESS,
         function: proxy.getFunction("createAgent"),
-        arguments: [MOCK_METADATA.agentId, TEST_ADDRESS, MOCK_METADATA.metadata, [Number(MOCK_METADATA.chainIds)]],
+        arguments: [
+          MOCK_METADATA.agentId,
+          TEST_ADDRESS,
+          MOCK_METADATA.metadata,
+          [utils.parseUnits(MOCK_METADATA.chainIds[0], "wei")],
+        ],
       });
 
     findings = await handleTransaction(mockTxEvent);
@@ -68,11 +74,16 @@ describe("Bot deployment tracker Agent", () => {
   it("should return Findings if tx is sent from the deployer", async () => {
     const mockTxEvent: TransactionEvent = new TestTransactionEvent()
       .setFrom(BOT_DEPLOYER_ADDRESS)
-      .setTo(PROXY_ADDRESS)
+      .setTo(REGISTRY_ADDRESS)
       .addTraces({
-        to: PROXY_ADDRESS,
+        to: REGISTRY_ADDRESS,
         function: proxy.getFunction("createAgent"),
-        arguments: [MOCK_METADATA.agentId, TEST_ADDRESS, MOCK_METADATA.metadata, [Number(MOCK_METADATA.chainIds)]],
+        arguments: [
+          MOCK_METADATA.agentId,
+          TEST_ADDRESS,
+          MOCK_METADATA.metadata,
+          [utils.parseUnits(MOCK_METADATA.chainIds[0], "wei")],
+        ],
       });
 
     findings = await handleTransaction(mockTxEvent);
@@ -85,16 +96,26 @@ describe("Bot deployment tracker Agent", () => {
   it("should return Findings if there are multiple calls to createAgent function", async () => {
     const mockTxEvent: TransactionEvent = new TestTransactionEvent()
       .setFrom(BOT_DEPLOYER_ADDRESS)
-      .setTo(PROXY_ADDRESS)
+      .setTo(REGISTRY_ADDRESS)
       .addTraces({
-        to: PROXY_ADDRESS,
+        to: REGISTRY_ADDRESS,
         function: proxy.getFunction("createAgent"),
-        arguments: [MOCK_METADATA.agentId, TEST_ADDRESS, MOCK_METADATA.metadata, [Number(MOCK_METADATA.chainIds)]],
+        arguments: [
+          MOCK_METADATA.agentId,
+          TEST_ADDRESS,
+          MOCK_METADATA.metadata,
+          [utils.parseUnits(MOCK_METADATA.chainIds[0], "wei")],
+        ],
       })
       .addTraces({
-        to: PROXY_ADDRESS,
+        to: REGISTRY_ADDRESS,
         function: proxy.getFunction("createAgent"),
-        arguments: [MOCK_METADATA2.agentId, TEST_ADDRESS, MOCK_METADATA2.metadata, [Number(MOCK_METADATA2.chainIds)]],
+        arguments: [
+          MOCK_METADATA2.agentId,
+          TEST_ADDRESS,
+          MOCK_METADATA2.metadata,
+          [utils.parseUnits(MOCK_METADATA.chainIds[0], "wei")],
+        ],
       });
 
     findings = await handleTransaction(mockTxEvent);

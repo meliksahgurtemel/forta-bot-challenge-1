@@ -1,5 +1,5 @@
 import { Finding, HandleTransaction, TransactionEvent, FindingSeverity, FindingType } from "forta-agent";
-import { FUNCTION_ABI, PROXY_ADDRESS, BOT_DEPLOYER_ADDRESS } from "./constants";
+import { FUNCTION_ABI, REGISTRY_ADDRESS, BOT_DEPLOYER_ADDRESS } from "./constants";
 
 export function provideHandleTransaction(functionAbi: string, proxy: string, deployer: string): HandleTransaction {
   return async (txEvent: TransactionEvent) => {
@@ -20,7 +20,7 @@ export function provideHandleTransaction(functionAbi: string, proxy: string, dep
           alertId: "NETH-1",
           severity: FindingSeverity.Info,
           type: FindingType.Info,
-          protocol: "Nethermind",
+          protocol: "Forta",
           metadata: {
             agentId: agentId.toString(),
             metadata,
@@ -35,5 +35,5 @@ export function provideHandleTransaction(functionAbi: string, proxy: string, dep
 }
 
 export default {
-  handleTransaction: provideHandleTransaction(FUNCTION_ABI, PROXY_ADDRESS, BOT_DEPLOYER_ADDRESS),
+  handleTransaction: provideHandleTransaction(FUNCTION_ABI, REGISTRY_ADDRESS, BOT_DEPLOYER_ADDRESS),
 };
