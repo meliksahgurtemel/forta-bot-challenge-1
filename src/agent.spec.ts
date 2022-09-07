@@ -4,7 +4,7 @@ import { provideHandleTransaction } from "./agent";
 import { createAddress } from "forta-agent-tools";
 import { TestTransactionEvent } from "forta-agent-tools/lib/test";
 import { Interface } from "ethers/lib/utils";
-import { utils } from "ethers";
+import { BigNumber } from "ethers";
 
 const TEST_ADDRESS = createAddress("0x123abc");
 
@@ -62,7 +62,7 @@ describe("Bot deployment tracker", () => {
           MOCK_METADATA.agentId,
           TEST_ADDRESS,
           MOCK_METADATA.metadata,
-          [utils.parseUnits(MOCK_METADATA.chainIds[0], "wei")],
+          [BigNumber.from(MOCK_METADATA.chainIds[0])],
         ],
       });
 
@@ -82,7 +82,7 @@ describe("Bot deployment tracker", () => {
           MOCK_METADATA.agentId,
           TEST_ADDRESS,
           MOCK_METADATA.metadata,
-          [utils.parseUnits(MOCK_METADATA.chainIds[0], "wei")],
+          [BigNumber.from(MOCK_METADATA.chainIds[0])],
         ],
       });
 
@@ -104,7 +104,7 @@ describe("Bot deployment tracker", () => {
           MOCK_METADATA.agentId,
           TEST_ADDRESS,
           MOCK_METADATA.metadata,
-          [utils.parseUnits(MOCK_METADATA.chainIds[0], "wei")],
+          [BigNumber.from(MOCK_METADATA.chainIds[0])],
         ],
       })
       .addTraces({
@@ -114,7 +114,7 @@ describe("Bot deployment tracker", () => {
           MOCK_METADATA2.agentId,
           TEST_ADDRESS,
           MOCK_METADATA2.metadata,
-          [utils.parseUnits(MOCK_METADATA.chainIds[0], "wei")],
+          [BigNumber.from(MOCK_METADATA.chainIds[0])],
         ],
       });
 
